@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
+  Statusbar
 } from 'react-native';
 import MealCard from '../components/MealCard';
 import NutritionProgress from '../components/NutritionProgress';
@@ -59,6 +60,7 @@ export default function NutritionScreen({ navigation }) {
 
   return (
     <ScrollView style={styles.container}>
+      
       <View style={styles.header}>
         <Text style={styles.title}>Nutrition Tracking</Text>
         <TouchableOpacity style={styles.addMealButton} onPress={() => setModalVisible(true)}>

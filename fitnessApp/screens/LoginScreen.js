@@ -8,26 +8,32 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
+  
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-export default function LoginScreen({ navigation }) {
+import { useNavigation } from '@react-navigation/native';
+export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  const navigation = useNavigation()
   const handleLogin = async () => {
-    // Simulated authentication logic
-    if (email === 'test@example.com' && password === 'password123') {
+    if (!email.trim() || !password.trim()) {
+      setError('Please enter both email and password');
+      return;
+    }
+
+    try {
       const userData = { email };
       await AsyncStorage.setItem('user', JSON.stringify(userData));
 
-      // Show success message and navigate to Home
       Alert.alert('Login Successful', 'Welcome back!', [
-        { text: 'OK', onPress: () => navigation.replace('Home') },
+        { text: 'OK', onPress: () => navigation.navigate('Home') },
       ]);
-    } else {
-      setError('Invalid email or password');
+    } catch (error) {
+      setError('An error occurred while logging in.');
+      console.error('Login error:', error);
     }
   };
 
@@ -81,10 +87,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 20,
+    justifyContent: 'center',
   },
   logoContainer: {
     alignItems: 'center',
-    marginTop: 100,
     marginBottom: 50,
   },
   title: {
