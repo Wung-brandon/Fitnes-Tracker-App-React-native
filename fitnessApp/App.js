@@ -22,6 +22,8 @@ import LoadingScreen from './screens/LoadingScreen';
 import GetStartedScreen from './screens/GetStartedScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import CategoryDetailScreen from './screens/CategoryDetailScreen';
+import ExerciseListScreen from './screens/ExerciseListScreen';
+import ExerciseDetailScreen from './screens/ExerciseDetailsScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -35,12 +37,12 @@ function TabNavigator() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Home') {
-            iconName = focused ? 'home' : 'home-outline';
+          if (route.name === 'Training') {
+            iconName = focused ? 'barbell' : 'barbell-outline';
           } else if (route.name === 'Workout') {
             iconName = focused ? 'fitness' : 'fitness-outline';
-          } else if (route.name === 'Nutrition') {
-            iconName = focused ? 'restaurant' : 'restaurant-outline';
+          } else if (route.name === 'Exercises') {
+            iconName = focused ? 'walk' : 'walk-outline';;
           } else if (route.name === 'Progress') {
             iconName = focused ? 'trending-up' : 'trending-up-outline';
           }
@@ -52,9 +54,9 @@ function TabNavigator() {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Training" component={HomeScreen} />
       <Tab.Screen name="Workout" component={WorkoutStack} />
-      <Tab.Screen name="Nutrition" component={NutritionScreen} />
+      <Tab.Screen name="Exercises" component={ExerciseListScreen} />
       <Tab.Screen name="Progress" component={ProgressScreen} />
       <Tab.Screen 
         name="Settings" 
@@ -73,6 +75,7 @@ function WorkoutStack() {
     <Stack.Navigator>
       <Stack.Screen name="Exercise" component={ExerciseScreen} options={{ headerShown: false }} />
       <Stack.Screen name="WorkoutDetail" component={WorkoutDetailScreen} options={{ title: 'Workout Details' }} />
+      
     </Stack.Navigator>
   );
 }
@@ -80,7 +83,7 @@ function WorkoutStack() {
 // ✅ **Drawer Navigator**
 const DrawerNavigator = () => (
   <Drawer.Navigator>
-    <Drawer.Screen name="Home" component={TabNavigator} options={{ headerShown: false }} />
+    <Drawer.Screen name="Training" component={TabNavigator} options={{ headerShown: false }} />
     <Drawer.Screen name="Settings" component={SettingsScreen} />
   </Drawer.Navigator>
 );
@@ -102,13 +105,14 @@ function AppNavigator() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-            name="Home"
+            name="HomeTabs"
             component={TabNavigator} // Ensure HomeScreen is imported
             options={{ headerShown: false }}
         />
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
         <Stack.Screen name="CategoryDetail" component={CategoryDetailScreen} />
         <Stack.Screen name="WorkoutDetail" component={WorkoutDetailScreen} />
+        <Stack.Screen name="ExerciseDetail" component={ExerciseDetailScreen} />
       {firstTimeUser ? (
         // Only show the Get Started screen if it's the user's first time
         <Stack.Screen

@@ -25,7 +25,7 @@ export default function RegisterScreen({ navigation }) {
 
       // Show success message and navigate to Home
       Alert.alert('Registration Successful', 'You have registered successfully!', [
-        { text: 'OK', onPress: () => navigation.replace('Home') }, // Navigate after dismissing the alert
+        { text: 'OK', onPress: () => navigation.replace('HomeTabs') }, // Navigate after dismissing the alert
       ]);
     } else {
       setError('Please fill in all fields');
@@ -77,7 +77,7 @@ export default function RegisterScreen({ navigation }) {
         onPress={() => navigation.navigate('Login')}
       >
         <Text style={styles.loginButtonText}>
-          Already have an account? Login
+          Already have an account? Login Login
         </Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>

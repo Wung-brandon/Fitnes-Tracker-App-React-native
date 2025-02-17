@@ -122,7 +122,7 @@ export default function ExerciseScreen({ navigation }) {
       ]}
       onPress={() => {
         setSelectedCategory(item.id);
-        navigation.navigate('CategoryDetail', { category: item.name }); // Pass the category name as a param
+        navigation.navigate('CategoryDetail', { category: item }); // Pass the category name as a param
       }}
     >
       <Ionicons

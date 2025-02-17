@@ -29,7 +29,7 @@ export default function LoginScreen() {
       await AsyncStorage.setItem('user', JSON.stringify(userData));
 
       Alert.alert('Login Successful', 'Welcome back!', [
-        { text: 'OK', onPress: () => navigation.navigate('Home') },
+        { text: 'OK', onPress: () => navigation.navigate('HomeTabs') },
       ]);
     } catch (error) {
       setError('An error occurred while logging in.');
@@ -75,7 +75,7 @@ export default function LoginScreen() {
         onPress={() => navigation.navigate('Register')}
       >
         <Text style={styles.registerButtonText}>
-          Don't have an account? Register
+          Don't have an account? Register Register
         </Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>

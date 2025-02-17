@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const CategoryDetailScreen = ({ route }) => {
-  const { category } = route.params; // Get the category name passed via navigation
+  const { category } = route.params; // Get the category object passed via navigation
 
   const categoryDetails = {
     Strength: {
@@ -48,13 +48,26 @@ const CategoryDetailScreen = ({ route }) => {
     },
   };
 
-  const categoryData = categoryDetails[category];
+  // Use category.name to access the correct details
+  const categoryData = categoryDetails[category.name];
+
+  // Add console log to verify the received category
+  // console.log("Received category:", categoryData);
+  
+  // Check if category data exists
+  if (!categoryData) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.errorText}>Category not found.</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Ionicons name={categoryData.icon} size={40} color="#4CAF50" />
-        <Text style={styles.title}>{category}</Text>
+        <Text style={styles.title}>{category.name}</Text>
       </View>
 
       <View style={styles.descriptionContainer}>
@@ -77,6 +90,7 @@ const CategoryDetailScreen = ({ route }) => {
       <View style={styles.footer}>
         <Text style={styles.footerText}>Stay Consistent and Push Your Limits!</Text>
       </View>
+      
     </ScrollView>
   );
 };
@@ -129,7 +143,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: 20,
   },
   footerText: {
     fontSize: 18,
