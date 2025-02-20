@@ -110,9 +110,9 @@ function AppNavigator() {
             options={{ headerShown: false }}
         />
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="CategoryDetail" component={CategoryDetailScreen} />
-        <Stack.Screen name="WorkoutDetail" component={WorkoutDetailScreen} />
-        <Stack.Screen name="ExerciseDetail" component={ExerciseDetailScreen} />
+        <Stack.Screen name="CategoryDetail" component={CategoryDetailScreen} options={{ title: 'Category Details' }}/>
+        <Stack.Screen name="WorkoutDetail" component={WorkoutDetailScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="ExerciseDetail" component={ExerciseDetailScreen} options={{ title: 'Exercise Details'  }}/>
       {firstTimeUser ? (
         // Only show the Get Started screen if it's the user's first time
         <Stack.Screen

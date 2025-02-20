@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { View, Text, Image, TextInput, ScrollView, Button, Alert, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, TextInput, ScrollView, Button, Alert, StyleSheet, TouchableOpacity } from "react-native";
 import Slider from '@react-native-community/slider';  // Make sure to install this library if you haven't
+import { AntDesign } from '@expo/vector-icons';
+
 
 const exerciseDetails = {
     "Back Extension": {
@@ -179,9 +181,36 @@ const exerciseDetails = {
 const ExerciseDetailScreen = ({ route }) => {
   const { exercise } = route.params;
   const details = exerciseDetails[exercise.name] || {};
+  // const [currentExerciseIndex, setCurrentExerciseIndex] = useState(initialExercises.indexOf(exercise.name));
   const [note, setNote] = useState("");
   const [isImageVisible, setIsImageVisible] = useState(true);  // State for toggle between image/video
   const [extraNote, setExtraNote] = useState("");
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+
+  // Timer logic
+  useEffect(() => {
+    let interval;
+    if (isRunning && (minutes > 0 || seconds > 0)) {
+      interval = setInterval(() => {
+        if (seconds === 0) {
+          if (minutes > 0) {
+            setMinutes((prev) => prev - 1);
+            setSeconds(59);
+          } else {
+            clearInterval(interval);
+            setIsRunning(false);
+          }
+        } else {
+          setSeconds((prev) => prev - 1);
+        }
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [isRunning, minutes, seconds]);
 
   const saveNote = () => {
     console.log("Note saved:", note);
@@ -189,6 +218,20 @@ const ExerciseDetailScreen = ({ route }) => {
     setExtraNote(note)
     setNote("");
   };
+
+  // const handleNextExercise = () => {
+  //   if (currentExerciseIndex < exercisesList.length - 1) {
+  //     setCurrentExerciseIndex(currentExerciseIndex + 1);
+  //     navigation.setParams({ exercise: { name: exercisesList[currentExerciseIndex + 1], image: exercise.image } });
+  //   }
+  // };
+
+  // const handlePrevExercise = () => {
+  //   if (currentExerciseIndex > 0) {
+  //     setCurrentExerciseIndex(currentExerciseIndex - 1);
+  //     navigation.setParams({ exercise: { name: exercisesList[currentExerciseIndex - 1], image: exercise.image } });
+  //   }
+  // };
 
   return (
     <ScrollView style={{ padding: 20, flex:1 }}>
@@ -244,6 +287,51 @@ const ExerciseDetailScreen = ({ route }) => {
           <Text style={{ fontWeight: "400", fontSize: 18 }}>{extraNote}</Text>
         </View>
       ) : null}
+
+      <Text style={styles.header}>Timer</Text>
+
+      {/* Timer Display */}
+      <View style={styles.timerDisplay}>
+        <TouchableOpacity
+          onPress={() => setMinutes((prev) => prev + 1)}
+          disabled={isRunning}
+        >
+          <AntDesign name="pluscircleo" size={40} color={isRunning ? "gray" : "green"} />
+        </TouchableOpacity>
+
+        <Text style={styles.timerText}>
+          {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
+        </Text>
+
+        <TouchableOpacity
+          onPress={() => setMinutes((prev) => Math.max(0, prev - 1))}
+          disabled={isRunning}
+        >
+          <AntDesign name="minuscircleo" size={40} color={isRunning ? "gray" : "red"} />
+        </TouchableOpacity>
+      </View>
+
+
+        {/* Start/Pause & Reset Buttons */}
+        <View style={styles.timerButtons}>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: "#4CAF50" }]}
+            onPress={() => setIsRunning(!isRunning)}
+          >
+            <Text style={styles.buttonText}>{isRunning ? "Pause" : "Start"}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: "red" }]}
+            onPress={() => {
+              setMinutes(0);
+              setSeconds(0);
+              setIsRunning(false);
+            }}
+          >
+            <Text style={styles.buttonText}>Reset</Text>
+          </TouchableOpacity>
+        </View>
     </ScrollView>
   );
 };
@@ -274,6 +362,53 @@ const styles = StyleSheet.create({
       textAlign: "center",
       fontSize: 16,
       color: "#555",
+    },
+    header: {
+      fontSize: 24,
+      fontWeight: "bold",
+      marginBottom: 20,
+    },
+    timerDisplay: {
+      backgroundColor: "#fff",
+      padding: 20,
+      borderRadius: 10,
+      elevation: 5,
+      marginBottom: 20,
+      width: "100%",
+      flexDirection: "row",  // Arrange elements in a row
+      alignItems: "center",  // Center vertically
+      justifyContent: "space-between", // Space out elements
+      paddingHorizontal: 30,  // Add some spacing for icons
+    },
+    
+    timerText: {
+      fontSize: 48,
+      fontWeight: "bold",
+      color: "#333",
+    },
+    controls: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      width: "100%",
+      
+    },
+    timerButtons: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      width: "100%",
+      marginBottom: 40,
+    },
+    button: {
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      borderRadius: 5,
+      elevation: 3,
+    },
+    buttonText: {
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: "bold",
+      textAlign: "center",
     },
     
   });

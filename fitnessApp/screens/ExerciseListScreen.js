@@ -98,6 +98,9 @@ export default function ExerciseListScreen() {
       const storedExercises = await AsyncStorage.getItem('exercises');
       if (storedExercises) {
         setExercises(JSON.parse(storedExercises));
+      }else {
+        await AsyncStorage.setItem('exercises', JSON.stringify(initialExercises));
+        setExercises(initialExercises);
       }
     };
     loadExercises();

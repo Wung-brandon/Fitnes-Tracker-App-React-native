@@ -20,8 +20,14 @@ import mountainClimber from "../assets/images/mountainclimbers.jpg"
 import kettlebellSwing from "../assets/images/Kettlebellswing.jpg"
 import backextension from "../assets/images/backextension.jpg"
 import defaultImage from "../assets/images/default.jpg"
+import strength from "../assets/images/strength.jpg"
+import stamina from "../assets/images/stamina.jpg"
+import muscle from "../assets/images/muscle.jpg"
 
 export {
+    strength,
+    stamina,
+    muscle,
     backextension,
     lowerBack,
     backwardLunge,
@@ -45,3 +51,6 @@ export {
     burpee,
     tricepdips
 }
+
+
+
