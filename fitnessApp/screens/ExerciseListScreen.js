@@ -276,7 +276,7 @@ export default function ExerciseListScreen() {
 
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", padding: 15 },
+  container: { flex: 1, backgroundColor: "#fff", padding: 15,  marginTop: '10%' },
 
   // Header styling
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 },

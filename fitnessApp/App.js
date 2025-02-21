@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-
 import { Ionicons } from '@expo/vector-icons';
-import { useAuth, AuthProvider } from './context/AuthContext';
 import { WorkoutProvider } from './context/WorkContext';
 import { NutritionProvider } from './context/NutritionProvider';
 
@@ -24,6 +22,10 @@ import ProfileScreen from './screens/ProfileScreen';
 import CategoryDetailScreen from './screens/CategoryDetailScreen';
 import ExerciseListScreen from './screens/ExerciseListScreen';
 import ExerciseDetailScreen from './screens/ExerciseDetailsScreen';
+import NotificationSettingsScreen from './screens/NotificationSettingsScreen';
+import RateUsScreen from './screens/RateUsScreen';
+import PrivacyPolicyScreen from './screens/PrivacyPolicyScreen';
+import { AuthContext, AuthProvider } from './context/AuthContext';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -90,7 +92,7 @@ const DrawerNavigator = () => (
 
 // ✅ **Main App Navigator (Handles Authentication)**
 function AppNavigator() {
-  const { user, loading, firstTimeUser } = useAuth();
+  const { user, loading } = useContext(AuthContext);
 
   if (loading) {
     return <LoadingScreen />;
@@ -108,20 +110,14 @@ function AppNavigator() {
             name="HomeTabs"
             component={TabNavigator} // Ensure HomeScreen is imported
             options={{ headerShown: false }}
-        />
+      />
+        <Stack.Screen name="RateUs" component={RateUsScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="NotificationSettings" component={NotificationSettingsScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
         <Stack.Screen name="CategoryDetail" component={CategoryDetailScreen} options={{ title: 'Category Details' }}/>
         <Stack.Screen name="WorkoutDetail" component={WorkoutDetailScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="ExerciseDetail" component={ExerciseDetailScreen} options={{ title: 'Exercise Details'  }}/>
-      {firstTimeUser ? (
-        // Only show the Get Started screen if it's the user's first time
-        <Stack.Screen
-          name="GetStarted"
-          component={GetStartedScreen}
-          options={{ headerShown: false }}
-        />
-      ) : (
-        // Conditional rendering for login/register for returning users
         <>
           {!user ? (
             <>
@@ -140,7 +136,7 @@ function AppNavigator() {
             </>
           )}
         </>
-      )}
+      
     </Stack.Navigator>
   );
 }
